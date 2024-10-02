@@ -1,3 +1,9 @@
+> [!NOTE]  
+> This fork aims to expand upong [Gromstole](https://github.com/PoonLab/gromstole) with a web-server and data-dashboard. 
+
+> [!WARNING]  
+> Do not merge this fork back into the [upstream repo of PoonLab](https://github.com/PoonLab/gromstole)
+
 Gromstole is collection of Python and R scripts to estimate the relative frequencies of different SARS-CoV-2 [lineages](https://cov-lineages.org/), including specific "variants of concern", from next-generation sequence data (FASTQ) derived from wastewater samples.  This includes:
 * a wrapper script (`minimap2.py`) to rapidly stream output from the reference mapping program [minimap](https://github.com/lh3/minimap2) to extract coverage and mutation frequency statistics for each sample;
 * an R script (`estimate-freqs.R`) that uses quasibinomial regression to estimate the frequency of a variant of concern from the frequencies of mutations based on the associated [constellation file](https://github.com/cov-lineages/constellations/)
