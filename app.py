@@ -2,7 +2,7 @@ from flask import Flask,request
 
 from dotenv import load_dotenv
 import sys
-from utils import DEFAULTS, parse_args,validate_regions,validate_yearStart_epiweekStart_yearEnd_epiweekEnd,validate_mutation,validate_coordinate,validate_frequency
+from utils import DEFAULTS, parse_args,validate_regions,validate_yearStart_epiweekStart_yearEnd_epiweekEnd,validate_mutation,validate_coordinate,validate_frequency, validate_page
 
 import psycopg2
 import psycopg2.extras
@@ -43,6 +43,7 @@ Query args:
     mutation                : string or comma-separated string. Ex: "", "sub", "ins,del"
     coordStart,coordEnd     : integers. swap them around if coordStart > coordEnd
     freqStart,freqEnd       : floats. swap them around if freqStart > freqEnd
+    page                    : int. defaults to 0
 
     http://localhost:5000/filter?
         region="east,west,north"
@@ -51,6 +52,7 @@ Query args:
         &epiweekStart=1&epiweekEnd=3
         &coordStart=1345&coordEnd=1450
         &freqStart=0.56&freqEnd=0.87
+        &page=3
 """
 
 @app.route("/defaults", methods = ['GET'])
@@ -107,6 +109,7 @@ def filter():
     coordEnd        = request.args.get("coordEnd")
     freqStart       = request.args.get("freqStart")
     freqEnd         = request.args.get("freqEnd")
+    page            = request.args.get("page")
     
     # perform validation
     (yearStart,epiweekStart,yearEnd,epiweekEnd) = validate_yearStart_epiweekStart_yearEnd_epiweekEnd(yearStart,epiweekStart,yearEnd,epiweekEnd)
@@ -114,6 +117,7 @@ def filter():
     mutation                                    = validate_mutation(mutation)
     (coordStart,coordEnd)                       = validate_coordinate(coordStart,coordEnd)
     (freqStart,freqEnd)                         = validate_frequency(freqStart,freqEnd)
+    page                                        = validate_page(page)
 
     # form query string
     query = "SELECT * FROM AGGREGATE_MAPPED"
@@ -137,6 +141,11 @@ def filter():
 
     if(freqStart != None and freqEnd != None):
         query += f" AND CAST(coverage AS FLOAT) <> 0.0 AND (CAST(count AS FLOAT) / CAST(coverage AS FLOAT)) BETWEEN {freqStart} AND {freqEnd}"
+
+    offset = 0
+    limit = DEFAULTS["LIMIT"]
+    if(page != None): offset = limit * page
+    query += f" LIMIT {limit} OFFSET {offset} "
 
     cursor.execute(query)
     results = cursor.fetchall()

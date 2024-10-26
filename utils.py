@@ -1,6 +1,7 @@
 import argparse
 import os
 import re
+import math 
 
 DEFAULTS = {
     "YEAR_MIN"      : 2014,
@@ -12,6 +13,8 @@ DEFAULTS = {
     "FREQ_MIN"      : 0.0,
     "FREQ_MAX"      : 1.0,
     "REGIONS"       :["Toronto","Central East","Pearson","Unkown","North East","South West","Central West","East"],
+    "PAGE"          : 0,
+    "LIMIT"         : 500,
 }
 
 def parse_args():
@@ -106,3 +109,9 @@ def validate_frequency(freqStart:str,freqEnd:str)->tuple[float,float] | tuple[No
     if(freqStart > freqEnd): (freqStart,freqEnd) = (freqEnd,freqStart)
 
     return (freqStart,freqEnd)
+
+def validate_page(page : str) -> int | None:
+    p = strip_digits(page)
+    if(p == None) : return None
+    p = math.floor(float(p))
+    return p
