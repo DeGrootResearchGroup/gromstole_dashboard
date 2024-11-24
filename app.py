@@ -152,6 +152,18 @@ def mutation_headers():
 
 @app.route("/filter", methods=['GET'])
 def filter():
+    custom_header = request.headers
+    
+    print(custom_header)
+
+    regions = custom_header.get("Regions")
+    frequencies = custom_header.get("Frequency") 
+    lineages = custom_header.get("Lineages")
+    sublineages = custom_header.get("Sublineages")
+    date = custom_header.get("Dates")
+    coordinates = custom_header.get("Coordinates") # called "Mutations" in Tesello
+    print(frequencies,lineages,coordinates)
+
     region          = request.args.get("region") 
     yearStart       = request.args.get("yearStart")
     epiweekStart    = request.args.get("epiweekStart")
