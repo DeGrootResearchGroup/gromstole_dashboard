@@ -33,26 +33,6 @@ except psycopg2.Error as e:
     sys.exit()
 
 
-"""
-Query args:
-    region                  : string, or comma-separated string. Ex: "", "east" , "east,west,north"
-    yearStart,yearEnd       : integer. swap them around if yearStart > yearEnd
-    epiweekStart,epiweekEnd : integer. swap them around if yearStart == yearEnd AND epiweekStart > epiweekEnd
-    mutation                : string or comma-separated string. Ex: "", "sub", "ins,del"
-    coordStart,coordEnd     : integers. swap them around if coordStart > coordEnd
-    freqStart,freqEnd       : floats. swap them around if freqStart > freqEnd
-    page                    : int. defaults to 0
-
-    http://localhost:5000/filter?
-        region="east,west,north"
-        &mutation="ins,del"
-        &yearStart=2023&yearEnd=2024
-        &epiweekStart=1&epiweekEnd=3
-        &coordStart=1345&coordEnd=1450
-        &freqStart=0.56&freqEnd=0.87
-        &page=3
-"""
-
 @app.route("/defaults", methods = ['GET'])
 def defaults():
     """Get all the options for regions, the min-max value for year/week, the min-max values for coordinates"""
@@ -150,20 +130,27 @@ def mutation_headers():
     return jsonify(distinct_mutations)
 
 
+"""
+Query args:
+    region                  : string, or comma-separated string. Ex: "", "east" , "east,west,north"
+    yearStart,yearEnd       : integer. swap them around if yearStart > yearEnd
+    epiweekStart,epiweekEnd : integer. swap them around if yearStart == yearEnd AND epiweekStart > epiweekEnd
+    mutation                : string or comma-separated string. Ex: "", "sub", "ins,del"
+    coordStart,coordEnd     : integers. swap them around if coordStart > coordEnd
+    freqStart,freqEnd       : floats. swap them around if freqStart > freqEnd
+    page                    : int. defaults to 0
+
+    http://localhost:5000/filter?
+        region="east,west,north"
+        &mutation="ins,del"
+        &yearStart=2023&yearEnd=2024
+        &epiweekStart=1&epiweekEnd=3
+        &coordStart=1345&coordEnd=1450
+        &freqStart=0.56&freqEnd=0.87
+        &page=3
+"""
 @app.route("/filter", methods=['GET'])
 def filter():
-    custom_header = request.headers
-    
-    print(custom_header)
-
-    regions = custom_header.get("Regions")
-    frequencies = custom_header.get("Frequency") 
-    lineages = custom_header.get("Lineages")
-    sublineages = custom_header.get("Sublineages")
-    date = custom_header.get("Dates")
-    coordinates = custom_header.get("Coordinates") # called "Mutations" in Tesello
-    print(frequencies,lineages,coordinates)
-
     region          = request.args.get("region") 
     yearStart       = request.args.get("yearStart")
     epiweekStart    = request.args.get("epiweekStart")
