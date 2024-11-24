@@ -1,0 +1,21 @@
+.frequency-filter{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto 40px auto;
+}
+.frequency-filter-thumb{
+    border-radius: 10px;
+    padding: 5px;
+    width: 35px;
+    font-size: small;
+    text-align: center;
+    background-color: white;
+    border: 2px solid #C4C4C4;
+    color: #333333;
+}
+.frequency-filter-track{
+    border: 2px solid #C4C4C4;
+    height: 2px;
+    background-color: #C4C4C4;
+}

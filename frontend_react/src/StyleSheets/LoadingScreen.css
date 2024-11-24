@@ -1,0 +1,12 @@
+.loading-gif-container{
+    width: 50vw;
+    height:50vh;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-gif{
+    width: 50%;
+}

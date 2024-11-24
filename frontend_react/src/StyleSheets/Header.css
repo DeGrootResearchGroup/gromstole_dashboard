@@ -1,0 +1,26 @@
+.Header{
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.FrequencyLegend {
+    padding: 5px;
+}
+
+.FrequencyToggle {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    font: bold 14px Arial;
+    align-items: center;
+
+}
+
+#export-btn {
+    text-decoration: none;
+    color: white;
+}
