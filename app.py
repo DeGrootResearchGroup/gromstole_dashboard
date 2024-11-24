@@ -23,11 +23,9 @@ connection_parameters = {
     'dbname'    :   args.dbname,
 }
 
-cursor = None
 connection = None
 try:
     connection = psycopg2.connect(**connection_parameters)
-    cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
 except psycopg2.Error as e:
     print(f"Error initiating connection to database: {format(e)}")
     sys.exit()
@@ -59,6 +57,9 @@ Query args:
 def defaults():
     """Get all the options for regions, the min-max value for year/week, the min-max values for coordinates"""
     
+    # spawn a new cursor to avoid race-conditions
+    cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+
     response = DEFAULTS
     
     # find all unique values for regions
@@ -146,7 +147,9 @@ def filter():
     limit = DEFAULTS["LIMIT"]
     if(page != None): offset = limit * page
     query += f" LIMIT {limit} OFFSET {offset} "
-
+    
+    # spawn a new cursor to avoid race-conditions
+    cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cursor.execute(query)
     results = cursor.fetchall()
     return results
