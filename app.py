@@ -100,6 +100,58 @@ def defaults():
     return jsonify(response)
 
 
+# return col headers i.e array of all dates
+@app.route("/date_headers", methods=['GET'])
+def date_headers():
+    # spawn a new cursor to avoid race-conditions
+    cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+    
+    # find the min year, min epiepiweek
+    query = "SELECT CAST(year AS INTEGER),CAST(epiweek AS INTEGER) FROM AGGREGATE_MAPPED ORDER BY CAST(year AS INTEGER) ASC, CAST(epiweek AS INTEGER) ASC LIMIT 1"
+    cursor.execute(query)
+    min_year_epiweek = dict(cursor.fetchall()[0])
+
+    # find the max year, max epiepiweek
+    query = "SELECT CAST(year AS INTEGER),CAST(epiweek AS INTEGER) FROM AGGREGATE_MAPPED ORDER BY CAST(year AS INTEGER) DESC, CAST(epiweek AS INTEGER) DESC LIMIT 1"
+    cursor.execute(query)
+    max_year_epiweek = dict(cursor.fetchall()[0])
+
+    minYear = (int)(min_year_epiweek['year'])
+    maxYear = (int)(max_year_epiweek['year'])
+    minEpiweek = (int)(min_year_epiweek['epiweek'])
+    maxEpiweek = (int)(max_year_epiweek['epiweek'])
+
+    # generate array of year-week values 
+    result = []
+    for year in range(minYear, maxYear + 1):
+        # Determine the range of weeks for the current year
+        week_start = minYear if year == minYear else 1
+        week_end = maxEpiweek if year == maxEpiweek else 52
+        
+        # Add each "year-week" combination to the result
+        for week in range(minEpiweek, maxEpiweek + 1):
+            result.append(f"{year}-{week:02}")
+
+    return jsonify(result)
+
+# return row headers i.e array of all mutation
+@app.route("/mutation_headers", methods=['GET'])
+def mutation_headers():
+    # spawn a new cursor to avoid race-conditions
+    cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
+    
+    query = "SELECT DISTINCT ON (CAST(REGEXP_REPLACE(nuc, '[~\-+ATGC]', '', 'g') AS FLOAT)) nuc"
+    query += " FROM AGGREGATE_MAPPED"
+    query += " ORDER BY CAST(REGEXP_REPLACE(nuc, '[~\-+ATGC]', '', 'g') AS FLOAT);"
+
+    cursor.execute(query)
+    distinct_mutations = []
+    for row in cursor.fetchall():
+        distinct_mutations.append(row['nuc'])
+
+    return jsonify(distinct_mutations)
+
+
 @app.route("/filter", methods=['GET'])
 def filter():
     region          = request.args.get("region") 
