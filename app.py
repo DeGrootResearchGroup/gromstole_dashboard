@@ -32,8 +32,6 @@ except psycopg2.Error as e:
     print(f"Error initiating connection to database: {format(e)}")
     sys.exit()
 
-print(cursor,connection)
-
 
 """
 Query args:
@@ -178,7 +176,6 @@ def filter():
     query = "SELECT * FROM AGGREGATE_MAPPED"
     
     # always filtering by year so that subsequent query-params can always begin with an "AND"
-    # query += f" WHERE year >= {yearStart} AND year <= {yearEnd} AND epiweek >= {epiweekStart} AND epiweek <= {epiweekEnd}"
     query += f" WHERE CAST(year AS INTEGER) >= {yearStart} AND CAST(year AS INTEGER) <= {yearEnd} AND CAST(epiweek AS INTEGER) >= {epiweekStart} AND CAST(epiweek AS INTEGER) <= {epiweekEnd}"
 
     if(region != None):
