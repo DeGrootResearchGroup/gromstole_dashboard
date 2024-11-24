@@ -207,4 +207,65 @@ def filter():
     cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cursor.execute(query)
     results = cursor.fetchall()
-    return jsonify(results)
+
+    tempMatrix = {} 
+    matrix = []
+    '''
+        tempMatrix looks like 
+        {
+            '~123T' : {
+                '2012-09' : { frequency:1.1, count:31 },
+                '2012-10' : { frequency:3.1, count:54 },
+                '2012-11' : { frequency:1.4, count:21 },
+            },
+            '-456A' : {
+                '2012-09' : { frequency:2.5, count:15 },
+                '2012-10' : { frequency:1.6, count:69 },
+                '2012-11' : { frequency:6.3, count:25 },
+            },
+        }
+        matrix looks like
+        [
+            {
+                mutation: '~123T', 
+                "2012-09":{ frequency:1.1, count:31 },
+                "2012-10":{ frequency:3.1, count:54 },
+                "2012-11":{ frequency:1.4, count:21 }
+            },
+            {
+                mutation: '~456A', 
+                '2012-09' : { frequency:2.5, count:15 },
+                '2012-10' : { frequency:1.6, count:69 },
+                '2012-11' : { frequency:6.3, count:25 },
+            },
+        ]
+    '''
+
+    cols = set([]) # a list of all the year-week strings -- convert this to a set
+    for i in range(len(results)):
+        year = results[i]['year']
+        epiweek = results[i]['epiweek']
+        iDateStr = year + '-' + epiweek
+        cols.add(iDateStr)
+        iFreq = round(100 * results[i]['count']/results[i]['coverage'],2)
+        iCount = results[i]['count']
+        iNuc = results[i]['nuc']
+        if(tempMatrix.get(iNuc) == None):
+            tempMatrix[iNuc] = {}
+        tempMatrix[iNuc][iDateStr] = {'frequency':iFreq,'count':iCount}
+    cols = list(cols)
+    cols = sorted(cols, key=lambda x: (int(x.split('-')[0]), int(x.split('-')[1]))) # date columns must be sorted
+
+# Convert tempMatrix into matrix
+    muts = tempMatrix.keys()
+    for m in muts:
+        data = {}
+        data['mutation'] = m
+        dates = tempMatrix[m].keys()
+        # dates = sorted(dates, key=lambda x: (int(x.split('-')[0]), int(x.split('-')[1]))) # date columns must be sorted
+        for d in dates:
+            data[d] = tempMatrix[m][d]
+        matrix.append(data)
+
+    response = jsonify({'columns':cols, 'rows':matrix})
+    return response
