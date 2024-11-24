@@ -80,12 +80,12 @@ def defaults():
     max_year_epiweek = dict(cursor.fetchall()[0])
     
     # get the min value for coord
-    query = "SELECT CAST(REGEXP_REPLACE(nuc, '[^0-9]', '', 'g') AS INTEGER) AS coord FROM AGGREGATE_MAPPED ORDER BY coord ASC LIMIT 1"
+    query = "SELECT CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) AS coord FROM AGGREGATE_MAPPED ORDER BY coord ASC LIMIT 1"
     cursor.execute(query)
     min_coord = cursor.fetchall()[0]['coord']
 
     # get the max value for coord
-    query = "SELECT CAST(REGEXP_REPLACE(nuc, '[^0-9]', '', 'g') AS INTEGER) AS coord FROM AGGREGATE_MAPPED ORDER BY coord DESC LIMIT 1"
+    query = "SELECT CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) AS coord FROM AGGREGATE_MAPPED ORDER BY coord DESC LIMIT 1"
     cursor.execute(query)
     max_coord = cursor.fetchall()[0]['coord']
 
@@ -140,7 +140,7 @@ def filter():
         query += " AND " + formatted_string
 
     if(coordStart != None and coordEnd != None):
-        query += f" AND CAST(REGEXP_REPLACE(nuc, '[^0-9-]', '', 'g') AS INTEGER) BETWEEN {coordStart} AND {coordEnd}"
+        query += f" AND CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) BETWEEN {coordStart} AND {coordEnd}"
 
     if(freqStart != None and freqEnd != None):
         query += f" AND CAST(coverage AS FLOAT) <> 0.0 AND (CAST(count AS FLOAT) / CAST(coverage AS FLOAT)) BETWEEN {freqStart} AND {freqEnd}"
@@ -148,6 +148,7 @@ def filter():
     offset = 0
     limit = DEFAULTS["LIMIT"]
     if(page != None): offset = limit * page
+    query += " ORDER BY CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT)"
     query += f" LIMIT {limit} OFFSET {offset} "
     
     # spawn a new cursor to avoid race-conditions
