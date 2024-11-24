@@ -1,0 +1,34 @@
+.FilterLineages {
+    padding-left: 10px;
+    width: 100%;
+}
+
+.FilterLineages__query {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 250px;
+    max-width: 95%;
+}
+
+.FilterLineages__sublineages {
+    padding-top: 10px;
+}
+
+.FilterLineages__searchbox {
+    width: 95%;
+}
+
+.FilterLineages__item {
+    display: flex;
+    flex-direction: row;
+    padding: 6px;
+    margin-top: 12px;
+    background-color: rgb(229, 229, 229);
+    border-radius: 15px;
+    text-align: center;
+    width: fit-content;
+}
+
+.FilterLineages__search {
+    padding: 3px 20px 3px 10px;
+}
