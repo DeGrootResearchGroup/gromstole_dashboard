@@ -37,14 +37,15 @@ def validate_regions(regions:str)->list[str]|None:
     if(regions == []): return None
     return regions
 
-def strip_digits(s:str)->int|None:
+def strip_digits(s:str)->int|float|None:
     """ a helper function used by other validate_* function """
     if(s == None): return None
     pattern = r'\b\d+\.\d+|\b\d+\b'
     # pattern = r'\d+'
     l = re.findall(pattern,s)
     if(l == []): return None
-    return l[0]
+    elif('.' in l[0]): return (float)(l[0])
+    else: return (int)(l[0])
 
 def validate_yearStart_epiweekStart_yearEnd_epiweekEnd(yearStart:str,epiweekStart:str,yearEnd:str,epiweekEnd:str)->tuple[int,int,int,int] | tuple[None,None,None,None]:
     """ validate the year and week """
@@ -58,6 +59,11 @@ def validate_yearStart_epiweekStart_yearEnd_epiweekEnd(yearStart:str,epiweekStar
     if(yearEnd      == None): yearEnd       = DEFAULTS['YEAR_MAX']
     if(epiweekStart == None): epiweekStart  = DEFAULTS['EPIWEEK_MIN']
     if(epiweekEnd   == None): epiweekEnd    = DEFAULTS['EPIWEEK_MAX']
+
+    yearStart = (int)(yearStart)
+    yearEnd = (int)(yearEnd)
+    epiweekStart = (int)(epiweekStart)
+    epiweekEnd = (int)(epiweekEnd)
 
     # swap yearStart,yearEnd if required
     if(yearStart > yearEnd): (yearStart,yearEnd) = (yearEnd,yearStart)
@@ -82,7 +88,7 @@ def validate_mutation(mutation:str)->list[str] | None:
         else: mutation.remove(mutation[i])
     return mutation
 
-def validate_coordinate(coordStart:str,coordEnd:str)->tuple[int,int] | tuple[None,None]:
+def validate_coordinate(coordStart:str,coordEnd:str)->tuple[float,float] | tuple[None,None]:
     coordStart  = strip_digits(coordStart)
     coordEnd    = strip_digits(coordEnd)
 
@@ -90,6 +96,9 @@ def validate_coordinate(coordStart:str,coordEnd:str)->tuple[int,int] | tuple[Non
 
     if(coordStart == None): coordStart = DEFAULTS["COORD_MIN"]
     if(coordEnd == None):   coordEnd = DEFAULTS["COORD_MAX"]
+
+    coordStart = (float)(coordStart)
+    coordEnd = (float)(coordEnd)
 
     # swap coordStart,coordEnd if required
     if(coordStart > coordEnd): (coordStart,coordEnd) = (coordEnd,coordStart)
@@ -106,9 +115,11 @@ def validate_frequency(freqStart:str,freqEnd:str)->tuple[float,float] | tuple[No
     if(freqEnd == None): freqEnd = DEFAULTS["FREQ_MAX"]
 
     # swap freqStart,freqEnd if required
+    freqStart = (float)(freqStart)
+    freqEnd = (float)(freqEnd)
     if(freqStart > freqEnd): (freqStart,freqEnd) = (freqEnd,freqStart)
 
-    return (freqStart,freqEnd)
+    return (freqStart/100,freqEnd/100) # convert frequencies from decimals to percentages
 
 def validate_page(page : str) -> int | None:
     p = strip_digits(page)
