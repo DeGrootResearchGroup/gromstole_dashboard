@@ -1,4 +1,5 @@
-from flask import Flask,request
+from flask import Flask,request,jsonify
+from flask_cors import CORS
 
 from dotenv import load_dotenv
 import sys
@@ -9,6 +10,7 @@ import psycopg2.extras
 from psycopg2 import sql
 
 app = Flask(__name__)
+CORS(app)
 
 # initialize connection to database
 load_dotenv()
@@ -95,7 +97,7 @@ def defaults():
     response["COORD_MAX"]       = max_coord
     response["REGIONS"]         = distinct_regions
     
-    return response
+    return jsonify(response)
 
 
 @app.route("/filter", methods=['GET'])
@@ -152,4 +154,4 @@ def filter():
     cursor = connection.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
     cursor.execute(query)
     results = cursor.fetchall()
-    return results
+    return jsonify(results)
