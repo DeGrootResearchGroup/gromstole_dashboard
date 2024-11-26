@@ -55,7 +55,7 @@ export default function CollapsedTable() {
 
   const cell_height = 30;
   const [columns,setColumns] = useState([]);
-  const {_g_mutation_headers} = useContext(GlobalDataContext);
+  const {_g_date_headers} = useContext(GlobalDataContext);
   const {filter__frequencies,filter__lineages, filter__mutations,filter__coordinates, filter__dates, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
   const [sortColumns, setSortColumns] = useState();
 
@@ -65,7 +65,7 @@ export default function CollapsedTable() {
   const [start, setStart] = useState(0);
   const containerRef = useRef(null);
   const [prevScrollVertical, setPrevScrollVertical] = useState(0);
-  const [filtered_headers, setFiltered_headers] = useState(_g_mutation_headers);
+  const [filtered_headers, setFiltered_headers] = useState(_g_date_headers);
   const [isLoading, setIsLoading] = useState(false);
   const [noOfRender, setNoOfRender] = useState(0);
 

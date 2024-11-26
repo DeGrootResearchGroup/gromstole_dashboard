@@ -46,7 +46,7 @@ function getColumns(filtered_headers) {
 export function Table(){
     const cell_height = 30;
     const [columns,setColumns] = useState([]);
-    const {_g_mutation_headers} = useContext(GlobalDataContext);
+    const {_g_date_headers} = useContext(GlobalDataContext);
     const {filter__frequencies,filter__lineages, filter__mutations, filter__dates, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
     const [sortColumns, setSortColumns] = useState();
 
@@ -56,7 +56,7 @@ export function Table(){
     const [start, setStart] = useState(0);
     const containerRef = useRef(null);
     const [prevScrollVertical, setPrevScrollVertical] = useState(0);
-    const [filtered_headers, setFiltered_headers] = useState(_g_mutation_headers);
+    const [filtered_headers, setFiltered_headers] = useState(_g_date_headers);
     const [isLoading, setIsLoading] = useState(false);
     const [noOfRender, setNoOfRender] = useState(0);
 
@@ -87,7 +87,7 @@ export function Table(){
       if (filter__reset) {
         setStart(0);
         setCurrentData([]);
-        setColumns(getColumns(_g_mutation_headers));
+        setColumns(getColumns(_g_date_headers));
         setPrevScrollVertical(0);
         setFilter__reset(false);
         return;

@@ -6,7 +6,7 @@ import '../StyleSheets/FilterBar.css'
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useState, useContext } from "react";
-import { GlobalFilterContext } from "../GlobalFilterContext";
+import { GlobalFilterContext,formatToYearWeek } from "../GlobalFilterContext";
 import { GlobalDataContext } from "../GlobalDataContext";
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,10 +14,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 export function FilterBar(){
     const [frequency, setFrequency] = useState([0,100]);
     const [reset, setReset] = useState(true)
-    const {_g_mutation_headers} = useContext(GlobalDataContext);
+    const {_g_date_headers} = useContext(GlobalDataContext);
     const [lineages, setLineages] = useState('');
     const [dates, setDates] = useState([new Date('2019-12-01'), new Date()]);
-    const [mutations, setMutations] = useState(_g_mutation_headers);
+    const [mutations, setMutations] = useState(_g_date_headers);
     const {setFilter__frequencies, setFilter__lineages, setFilter__mutations, setFilter__reset, setFilter__dates} = useContext(GlobalFilterContext);
     const [open, setOpen] = useState(true);
 
@@ -30,16 +30,18 @@ export function FilterBar(){
         // console.log(lineages, mutations, frequency, dates);
         setFilter__mutations(mutations);
         // setFilter__lineages(dates.filter(lineage=> lineages.includes(lineage)));
-        setFilter__dates(dates);
+        // setFilter__dates(dates);
+        setFilter__dates([formatToYearWeek(dates[0]), formatToYearWeek(dates[1])])
         setFilter__lineages(lineages);
         setFilter__frequencies(frequency);
     }
     const clearFilters = () => {
         setFilter__lineages('')
         setLineages('')
-        // setDates(_g_lineage_headers)
+        // setDates(_g_mutation_headers)
         setDates([new Date('2019-12-01'), new Date()])
-        setFilter__dates([new Date('2019-12-01'), new Date()])
+        // setFilter__dates([new Date('2019-12-01'), new Date()])
+        setFilter__dates([formatToYearWeek(new Date('2019-12-01')), formatToYearWeek(new Date())])
         setFrequency([0,100])
         setFilter__frequencies([0,100])
         setFilter__mutations([0,30300])
