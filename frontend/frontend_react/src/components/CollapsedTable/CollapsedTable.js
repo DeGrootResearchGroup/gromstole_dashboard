@@ -56,7 +56,7 @@ export default function CollapsedTable() {
   const cell_height = 30;
   const [columns,setColumns] = useState([]);
   const {_g_mutation_headers} = useContext(GlobalDataContext);
-  const {filter__frequencies,filter__lineages, filter__mutations, filter__dates, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
+  const {filter__frequencies,filter__lineages, filter__mutations,filter__coordinates, filter__dates, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
   const [sortColumns, setSortColumns] = useState();
 
   const url_load = $API_URL + $SPARSE_MATRIX_ENDPOINT;
@@ -140,8 +140,7 @@ export default function CollapsedTable() {
           setPrevScrollVertical(0);
           setFiltered_headers(newData.columns);
           setCurrentData(newData.rows)
-          setColumnNames(() => Object.keys(newData.rows[0] || {}),
-          [newData.rows])
+          setColumnNames(['mutation',...newData.columns], [newData.rows])
 
           setHiddenColumns(() => {
             let newHiddenColumns = {};
@@ -152,8 +151,7 @@ export default function CollapsedTable() {
       
             // Update column widths based on visibility
             const newColumnWidths = [...columnWidths];
-            newColumnWidths[0] = newHiddenColumns['lineage'] ? 25 : 100; 
-      
+            newColumnWidths[0] = newHiddenColumns['mutation'] ? 25 : 100; 
             setColumnWidths(newColumnWidths);
             
             // Reset the grid to recalculate column widths
@@ -266,7 +264,7 @@ export default function CollapsedTable() {
               ) : isHidden ? (
                 <div style={{ width: "100%", height: "100%", background: cellColor }} />
               ) : (
-                current_data[rowIndex - 1][columnNames[columnIndex]] ? (columnIndex === 0 ? current_data[rowIndex - 1]['lineage'] : current_data[rowIndex - 1][columnNames[columnIndex]]['frequency']) : 0
+                current_data[rowIndex - 1][columnNames[columnIndex]] ? (columnIndex === 0 ? current_data[rowIndex - 1]['mutation'] : current_data[rowIndex - 1][columnNames[columnIndex]]['frequency']) : 0
               )}
             </div>
           );

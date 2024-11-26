@@ -11,26 +11,26 @@ import DashboardSkeleton from "../skeleton/DashboardSkeleton";
 
 export function Dashboard(){
     const {
-        loading__g_lineage_headers,
-        // loading__g_lineage_trie,
         loading__g_mutation_headers,
+        // loading__g_lineage_trie,
+        loading__g_date_headers,
         // loading__g_sparse_matrix,
         // loading__g_aa_context
         }  = useContext(GlobalDataContext);
 
     // const {setFilter__lineages} = useContext(GlobalFilterContext);
-    // const {_g_lineage_headers} = useContext(GlobalDataContext);
+    // const {_g_mutation_headers} = useContext(GlobalDataContext);
 
     // useEffect(()=>{
-    //     if(_g_lineage_headers && _g_lineage_headers.length)
-    //       setFilter__lineages(_g_lineage_headers)
-    // },[_g_lineage_headers, setFilter__lineages])
+    //     if(_g_mutation_headers && _g_mutation_headers.length)
+    //       setFilter__lineages(_g_mutation_headers)
+    // },[_g_mutation_headers, setFilter__lineages])
     // const [checked, setCheck] = useState(true)
 
     if (
-        !loading__g_lineage_headers &&
+        !loading__g_mutation_headers &&
         // !loading__g_lineage_trie &&
-        !loading__g_mutation_headers 
+        !loading__g_date_headers 
         // &&
         // !loading__g_sparse_matrix &&
         // !loading__g_aa_context

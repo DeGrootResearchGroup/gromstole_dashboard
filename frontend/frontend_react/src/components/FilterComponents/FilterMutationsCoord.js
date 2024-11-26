@@ -9,12 +9,12 @@ import FormHelperText from '@mui/material/FormHelperText';
 
 export function FilterMutationsCoord({setMutations, autofill}){
 
-    const {_g_mutation_headers} = useContext(GlobalDataContext);
+    const {_g_date_headers} = useContext(GlobalDataContext);
     const [coord_one, setCoordOne] = useState(0);
     const [coord_two, setCoordTwo] = useState(30300);
 
     useEffect(()=>{
-        // setMutations(_g_mutation_headers.filter(mut => {
+        // setMutations(_g_date_headers.filter(mut => {
         //     let coord = parseInt(mut.match(/\d+/));
         //     return coord_one <= coord && coord <= coord_two;
         // }));
