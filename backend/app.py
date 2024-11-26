@@ -151,16 +151,30 @@ Query args:
 """
 @app.route("/filter", methods=['GET'])
 def filter():
-    region          = request.args.get("region") 
-    yearStart       = request.args.get("yearStart")
-    epiweekStart    = request.args.get("epiweekStart")
-    yearEnd         = request.args.get("yearEnd")
-    epiweekEnd      = request.args.get("epiweekEnd")
+    region         = request.headers.get("Regions") # comma-separated strings "east,west,north"
+    frequencies     = request.headers.get("Frequency") # comma-separated floats "45.3,98.6"
+    lineages        = request.headers.get("Lineages") # comma-separated strings "A,A.1,B.234"
+    sublineages     = request.headers.get("Sublineages") # boolean
+    dateRange       = request.headers.get("Dates") # comma-separated string YYYY-WW,YYYY-WW
+    coordinates     = request.headers.get("Coordinates") # comma-separated ints "245,5402" this used to be called "Mutations" in Tesselo
+    mutations       = request.headers.get("Mutations") # comma-separated strings "ins,del,sub" 
+
+    print("region",region)
+    print("frequencies",frequencies)
+    print("lineages",lineages)
+    print("sublineages",sublineages)
+    print("dateRange",dateRange)
+    print("coordinates",coordinates)
+    print("mutations",mutations)
+    
+    # region          = request.args.get("region") 
+    # yearStart       = request.args.get("yearStart")
+    # epiweekStart    = request.args.get("epiweekStart")
+    # yearEnd         = request.args.get("yearEnd")
+    # epiweekEnd      = request.args.get("epiweekEnd")
     mutation        = request.args.get("mutation")
     coordStart      = request.args.get("coordStart")
     coordEnd        = request.args.get("coordEnd")
-    freqStart       = request.args.get("freqStart")
-    freqEnd         = request.args.get("freqEnd")
     page            = request.args.get("page")
     
     # perform validation
@@ -168,7 +182,7 @@ def filter():
     region                                      = validate_regions(region)
     mutation                                    = validate_mutation(mutation)
     (coordStart,coordEnd)                       = validate_coordinate(coordStart,coordEnd)
-    (freqStart,freqEnd)                         = validate_frequency(freqStart,freqEnd)
+    frequencies                                 = validate_frequency(frequencies)
     page                                        = validate_page(page)
 
     # form query string
@@ -176,13 +190,13 @@ def filter():
 
     # always filtering by year so that subsequent query-params can always begin with an "AND"
     if(yearStart < yearEnd):
-        query += f" (CAST(year AS INTEGER) = {yearStart} AND CAST(epiweek AS INTEGER) >= {epiweekStart})"
+        query += f" ((CAST(year AS INTEGER) = {yearStart} AND CAST(epiweek AS INTEGER) >= {epiweekStart})"
         query += f" OR (CAST(year AS INTEGER) = {yearEnd} AND CAST(epiweek AS INTEGER) <= {epiweekEnd})"
-        query += f" OR (CAST(year as INTEGER) > {yearStart} AND CAST(year as INTEGER) < {yearEnd})"
+        query += f" OR (CAST(year as INTEGER) > {yearStart} AND CAST(year as INTEGER) < {yearEnd}))"
     elif (yearStart == yearEnd):
-        query += f" (CAST(year AS INTEGER) = {yearStart})" 
+        query += f" ((CAST(year AS INTEGER) = {yearStart})" 
         query += f" AND CAST(epiweek AS INTEGER) >= {epiweekStart})" 
-        query += f" AND CAST(epiweek AS INTEGER) <= {epiweekEnd})"
+        query += f" AND CAST(epiweek AS INTEGER) <= {epiweekEnd}))"
 
     if(region != None):
         query += " AND region in ("
@@ -197,8 +211,8 @@ def filter():
     if(coordStart != None and coordEnd != None):
         query += f" AND CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) BETWEEN {coordStart} AND {coordEnd}"
 
-    if(freqStart != None and freqEnd != None):
-        query += f" AND CAST(coverage AS FLOAT) <> 0.0 AND (CAST(count AS FLOAT) / CAST(coverage AS FLOAT)) BETWEEN {freqStart} AND {freqEnd}"
+    if(frequencies != None):
+        query += f" AND CAST(coverage AS FLOAT) <> 0.0 AND (CAST(count AS FLOAT) / CAST(coverage AS FLOAT)) BETWEEN {frequencies[0]} AND {frequencies[1]}"
 
     offset = 0
     limit = DEFAULTS["LIMIT"]

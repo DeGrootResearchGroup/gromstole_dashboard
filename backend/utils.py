@@ -107,11 +107,23 @@ def validate_coordinate(coordStart:str,coordEnd:str)->tuple[float,float] | tuple
 
     return (coordStart,coordEnd)
 
-def validate_frequency(freqStart:str,freqEnd:str)->tuple[float,float] | tuple[None,None]:
-    freqStart  = strip_digits(freqStart)
-    freqEnd    = strip_digits(freqEnd)
+def validate_frequency(frequencyRange:str)->list[float,float] | None:
+    """ 
+        validate frequencyRange string 
+        check that it has the format of '45,98'
+    """
+    if(frequencyRange == None) : return None
+    
+    frequencyRange = frequencyRange.strip()
+    if(len(frequencyRange) == 0): return None
+    
+    frequencyRange = frequencyRange.split(",")
+    if(len(frequencyRange) < 2): return None
+    
+    freqStart  = strip_digits(frequencyRange[0])
+    freqEnd    = strip_digits(frequencyRange[1])
 
-    if(freqStart == None and freqEnd == None): return (None,None)
+    if(freqStart == None and freqEnd == None): return None
     
     if(freqStart == None): freqStart = DEFAULTS["FREQ_MIN"]
     if(freqEnd == None): freqEnd = DEFAULTS["FREQ_MAX"]
