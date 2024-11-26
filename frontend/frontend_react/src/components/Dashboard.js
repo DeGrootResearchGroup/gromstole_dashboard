@@ -1,11 +1,13 @@
 import { useContext, useEffect } from "react";
-import { Table } from "./Table";
+// import { Table } from "./Table";
 import { FilterBar } from "./FilterBar";
 import { Header } from "./Header";
 import "../StyleSheets/Dashboard.css"
 import {GlobalFilterContext} from "../GlobalFilterContext"
 import {GlobalDataContext} from "../GlobalDataContext"
 import DashboardSkeleton from "../skeleton/DashboardSkeleton";
+import CollapsedTable from "./CollapsedTable/CollapsedTable";
+import { LoadingScreen } from './LoadingScreen';
 
 
 
@@ -41,12 +43,14 @@ export function Dashboard(){
                 <FilterBar/>
                 <div className="Dashboard_vBox">
                     <Header/>
-                    <Table/>
+                    {/* <Table/> */}
+                    <CollapsedTable/>
                 </div>
             </div>
         )
     }
     else {
-        return <DashboardSkeleton/>
+        // return <DashboardSkeleton/>
+        return <LoadingScreen/>
     }    
 }
