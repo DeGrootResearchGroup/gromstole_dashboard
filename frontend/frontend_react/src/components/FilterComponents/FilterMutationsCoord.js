@@ -7,18 +7,18 @@ import Stack from '@mui/material/Stack';
 import FormHelperText from '@mui/material/FormHelperText';
 
 
-export function FilterMutationsCoord({setMutations, autofill}){
+export function FilterMutationsCoord({setCoords, autofill}){
 
     const {_g_date_headers} = useContext(GlobalDataContext);
     const [coord_one, setCoordOne] = useState(0);
     const [coord_two, setCoordTwo] = useState(30300);
 
     useEffect(()=>{
-        // setMutations(_g_date_headers.filter(mut => {
+        // setCoords(_g_date_headers.filter(mut => {
         //     let coord = parseInt(mut.match(/\d+/));
         //     return coord_one <= coord && coord <= coord_two;
         // }));
-        setMutations([coord_one, coord_two])
+        setCoords([coord_one, coord_two])
     },[coord_one,coord_two])
 
     return (

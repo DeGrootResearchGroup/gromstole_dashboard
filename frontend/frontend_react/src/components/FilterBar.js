@@ -17,8 +17,8 @@ export function FilterBar(){
     const {_g_date_headers} = useContext(GlobalDataContext);
     const [lineages, setLineages] = useState('');
     const [dates, setDates] = useState([new Date('2019-12-01'), new Date()]);
-    const [mutations, setMutations] = useState(_g_date_headers);
-    const {setFilter__frequencies, setFilter__lineages, setFilter__mutations, setFilter__reset, setFilter__dates} = useContext(GlobalFilterContext);
+    // const [mutations, setMutations] = useState(_g_date_headers);
+    const {setFilter__frequencies, setFilter__lineages, setFilter__coordinates, setFilter__mutations, setFilter__reset, setFilter__dates} = useContext(GlobalFilterContext);
     const [open, setOpen] = useState(true);
 
     const toggleOpen = () => {
@@ -28,7 +28,7 @@ export function FilterBar(){
 
     const handleSubmit = () => {
         // console.log(lineages, mutations, frequency, dates);
-        setFilter__mutations(mutations);
+        // setFilter__mutations(mutations);
         // setFilter__lineages(dates.filter(lineage=> lineages.includes(lineage)));
         // setFilter__dates(dates);
         setFilter__dates([formatToYearWeek(dates[0]), formatToYearWeek(dates[1])])
@@ -44,8 +44,8 @@ export function FilterBar(){
         setFilter__dates([formatToYearWeek(new Date('2019-12-01')), formatToYearWeek(new Date())])
         setFrequency([0,100])
         setFilter__frequencies([0,100])
-        setFilter__mutations([0,30300])
-        setMutations([0,30300])
+        setFilter__coordinates([0,30300])
+        // setMutations([0,30300])
         setReset(!reset)
         setFilter__reset(true);
     }
@@ -69,7 +69,7 @@ export function FilterBar(){
 
                 <div className="FilterBar__item">
                     <div className="FilterBar__title">Coordinates:</div>
-                    <FilterMutationsCoord key={reset} setMutations={setMutations}></FilterMutationsCoord>
+                    <FilterMutationsCoord key={reset} setCoords={setFilter__coordinates}></FilterMutationsCoord>
                     
                 </div>
 
