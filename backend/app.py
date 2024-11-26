@@ -164,7 +164,7 @@ def filter():
     page            = request.args.get("page")
     
     # perform validation
-    (yearStart,epiweekStart,yearEnd,epiweekEnd) = validate_yearStart_epiweekStart_yearEnd_epiweekEnd(yearStart,epiweekStart,yearEnd,epiweekEnd)
+    (yearStart,epiweekStart,yearEnd,epiweekEnd) = validate_dateRange(dateRange)
     region                                      = validate_regions(region)
     mutation                                    = validate_mutation(mutation)
     (coordStart,coordEnd)                       = validate_coordinate(coordStart,coordEnd)
@@ -172,10 +172,17 @@ def filter():
     page                                        = validate_page(page)
 
     # form query string
-    query = "SELECT * FROM AGGREGATE_MAPPED"
-    
+    query = "SELECT * FROM AGGREGATE_MAPPED WHERE"
+
     # always filtering by year so that subsequent query-params can always begin with an "AND"
-    query += f" WHERE CAST(year AS INTEGER) >= {yearStart} AND CAST(year AS INTEGER) <= {yearEnd} AND CAST(epiweek AS INTEGER) >= {epiweekStart} AND CAST(epiweek AS INTEGER) <= {epiweekEnd}"
+    if(yearStart < yearEnd):
+        query += f" (CAST(year AS INTEGER) = {yearStart} AND CAST(epiweek AS INTEGER) >= {epiweekStart})"
+        query += f" OR (CAST(year AS INTEGER) = {yearEnd} AND CAST(epiweek AS INTEGER) <= {epiweekEnd})"
+        query += f" OR (CAST(year as INTEGER) > {yearStart} AND CAST(year as INTEGER) < {yearEnd})"
+    elif (yearStart == yearEnd):
+        query += f" (CAST(year AS INTEGER) = {yearStart})" 
+        query += f" AND CAST(epiweek AS INTEGER) >= {epiweekStart})" 
+        query += f" AND CAST(epiweek AS INTEGER) <= {epiweekEnd})"
 
     if(region != None):
         query += " AND region in ("
