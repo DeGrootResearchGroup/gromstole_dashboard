@@ -10,10 +10,10 @@ export const GlobalDataContext = createContext();
 
 export const GlobalDataContextProvider = function(props){
     const [_g_lineage_headers,loading__g_lineage_headers] = FetchLineageHeaders();
-    const [_g_lineage_dates,loading__g_lineage_dates] = FetchLineageDates();
-    const [_g_lineage_trie,loading__g_lineage_trie] = FetchLineageTrie();
+    // const [_g_lineage_dates,loading__g_lineage_dates] = FetchLineageDates();
+    // const [_g_lineage_trie,loading__g_lineage_trie] = FetchLineageTrie();
     const [_g_mutation_headers,loading__g_mutation_headers] = FetchMutationHeaders();
-    const [_g_aa_context, loading__g_aa_context] = FetchAAContext();
+    // const [_g_aa_context, loading__g_aa_context] = FetchAAContext();
 
     _g_mutation_headers.sort(function(a, b){
         let compared = parseInt(a.match(/\d+/) ) - parseInt(b.match(/\d+/))
@@ -24,10 +24,10 @@ export const GlobalDataContextProvider = function(props){
         <GlobalDataContext.Provider value = {
             {
                 _g_lineage_headers,     loading__g_lineage_headers,
-                _g_lineage_trie,        loading__g_lineage_trie,
+                // _g_lineage_trie,        loading__g_lineage_trie,
                 _g_mutation_headers,    loading__g_mutation_headers,
-                _g_aa_context,          loading__g_aa_context,
-                _g_lineage_dates,       loading__g_lineage_dates,            
+                // _g_aa_context,          loading__g_aa_context,
+                // _g_lineage_dates,       loading__g_lineage_dates,            
             
             }
         }>

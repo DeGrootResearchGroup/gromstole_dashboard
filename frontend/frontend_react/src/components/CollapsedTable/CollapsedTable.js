@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef, useMemo  } from 'react';
 import { FixedSizeList as List } from 'react-window';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
-import '../../StyleSheets/CollapsedTable.css'; // Importing external CSS for hover and border effects
+// import '../../StyleSheets/CollapsedTable.css'; // Importing external CSS for hover and border effects
 import { GlobalDataContext } from "../../GlobalDataContext";
 import { GlobalFilterContext } from "../../GlobalFilterContext";
 import { $API_URL, $SPARSE_MATRIX_ENDPOINT, $FILTER_ENDPOINT, $SORT_ENDPOINT, $CSV_ENDPOINT} from "../../config";
