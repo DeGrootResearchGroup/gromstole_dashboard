@@ -47,33 +47,35 @@ def strip_digits(s:str)->int|float|None:
     elif('.' in l[0]): return (float)(l[0])
     else: return (int)(l[0])
 
-def validate_yearStart_epiweekStart_yearEnd_epiweekEnd(yearStart:str,epiweekStart:str,yearEnd:str,epiweekEnd:str)->tuple[int,int,int,int] | tuple[None,None,None,None]:
-    """ validate the year and week """
+def validate_dateRange(dateRangeString:str|None)->tuple[int,int,int,int]:
+    """ 
+        validate dateRange string 
+        check that it has the format of 'YYYY-WW,YYYY-WW'
+    """
+    print("VALIDATING ",dateRangeString)
 
-    yearStart       = strip_digits(yearStart)
-    yearEnd         = strip_digits(yearEnd)
-    epiweekStart    = strip_digits(epiweekStart)
-    epiweekEnd      = strip_digits(epiweekEnd)
+    yearStart       =   DEFAULTS['YEAR_MIN']
+    yearEnd         =   DEFAULTS['YEAR_MAX']
+    epiweekStart    =   DEFAULTS['EPIWEEK_MIN']
+    epiweekEnd      =   DEFAULTS['EPIWEEK_MAX']
 
-    if(yearStart    == None): yearStart     = DEFAULTS['YEAR_MIN']
-    if(yearEnd      == None): yearEnd       = DEFAULTS['YEAR_MAX']
-    if(epiweekStart == None): epiweekStart  = DEFAULTS['EPIWEEK_MIN']
-    if(epiweekEnd   == None): epiweekEnd    = DEFAULTS['EPIWEEK_MAX']
-
-    yearStart = (int)(yearStart)
-    yearEnd = (int)(yearEnd)
-    epiweekStart = (int)(epiweekStart)
-    epiweekEnd = (int)(epiweekEnd)
-
-    # swap yearStart,yearEnd if required
-    if(yearStart > yearEnd): (yearStart,yearEnd) = (yearEnd,yearStart)
+    if(dateRangeString is None): 
+        return [yearStart,yearEnd,epiweekStart,epiweekEnd]
     
-    # swap epiweekStart,epiweekEnd if required
-    if(yearStart == yearEnd and epiweekStart > epiweekEnd): (epiweekStart,epiweekEnd) = (epiweekEnd,epiweekStart)
+    dateRange = re.findall(r'(\d\d\d\d)-(\d\d),(\d\d\d\d)-(\d\d)',dateRangeString)
+    if(dateRange == None or len(dateRange) != 1):
+        return [yearStart,yearEnd,epiweekStart,epiweekEnd]
+
+    if(dateRange[0] == None or len(dateRange[0]) != 4):
+        return [yearStart,yearEnd,epiweekStart,epiweekEnd]
+
+    yearStart       = (int)(dateRange[0][0])
+    epiweekStart    = (int)(dateRange[0][1])
+    yearEnd         = (int)(dateRange[0][2])
+    epiweekEnd      = (int)(dateRange[0][3])
+
+    return [yearStart,epiweekStart,yearEnd,epiweekEnd]
     
-    return (yearStart,epiweekStart,yearEnd,epiweekEnd)
-
-
 def validate_mutation(mutation:str)->list[str] | None:
     if(mutation == None) : return None
     mutation = mutation.replace("'", "").replace('"', "") # remove all single-quotes and double-quotes

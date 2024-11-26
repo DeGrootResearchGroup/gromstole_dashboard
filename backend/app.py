@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 from dotenv import load_dotenv
 import sys
-from utils import DEFAULTS, parse_args,validate_regions,validate_yearStart_epiweekStart_yearEnd_epiweekEnd,validate_mutation,validate_coordinate,validate_frequency, validate_page
+from utils import DEFAULTS, parse_args,validate_regions,validate_dateRange,validate_mutation,validate_coordinate,validate_frequency, validate_page
 
 import psycopg2
 import psycopg2.extras
