@@ -88,13 +88,26 @@ def validate_mutation(mutation:str)->list[str] | None:
         elif(mutation[i] == "del"): mutation[i]= "-"
         elif(mutation[i] == "sub"): mutation[i]= "~"
         else: mutation.remove(mutation[i])
+    if(len(mutation) == 3) : return None # dont bother querying if we're filtering for all 3 types of mutations
     return mutation
 
-def validate_coordinate(coordStart:str,coordEnd:str)->tuple[float,float] | tuple[None,None]:
-    coordStart  = strip_digits(coordStart)
-    coordEnd    = strip_digits(coordEnd)
+def validate_coordinate(coordRange:str)->tuple[float,float] | None:
+    """ 
+        validate frequencyRange string 
+        check that it has the format of '45,98'
+    """
+    if(coordRange == None) : return None
+    
+    coordRange = coordRange.strip()
+    if(len(coordRange) == 0): return None
+    
+    coordRange = coordRange.split(",")
+    if(len(coordRange) < 2): return None
+    
+    coordStart  = strip_digits(coordRange[0])
+    coordEnd    = strip_digits(coordRange[1])
 
-    if(coordStart == None and coordEnd == None): return (None,None)
+    if(coordStart == None and coordEnd == None): return None
 
     if(coordStart == None): coordStart = DEFAULTS["COORD_MIN"]
     if(coordEnd == None):   coordEnd = DEFAULTS["COORD_MAX"]

@@ -172,7 +172,7 @@ def filter():
     # epiweekStart    = request.args.get("epiweekStart")
     # yearEnd         = request.args.get("yearEnd")
     # epiweekEnd      = request.args.get("epiweekEnd")
-    mutation        = request.args.get("mutation")
+    # mutations        = request.args.get("mutations")
     coordStart      = request.args.get("coordStart")
     coordEnd        = request.args.get("coordEnd")
     page            = request.args.get("page")
@@ -180,8 +180,8 @@ def filter():
     # perform validation
     (yearStart,epiweekStart,yearEnd,epiweekEnd) = validate_dateRange(dateRange)
     region                                      = validate_regions(region)
-    mutation                                    = validate_mutation(mutation)
-    (coordStart,coordEnd)                       = validate_coordinate(coordStart,coordEnd)
+    mutations                                    = validate_mutation(mutations)
+    coordinates                                 = validate_coordinate(coordinates)
     frequencies                                 = validate_frequency(frequencies)
     page                                        = validate_page(page)
 
@@ -204,12 +204,12 @@ def filter():
         query += formatted_string
         query += ")"
     
-    if(mutation != None):
-        formatted_string = " OR ".join([f"nuc LIKE '{mut}%'" for mut in mutation])
-        query += " AND " + formatted_string
+    if(mutations != None):
+        formatted_string = " OR ".join([f"nuc LIKE '{mut}%'" for mut in mutations])
+        query += " AND " + "(" + formatted_string + ")"
 
-    if(coordStart != None and coordEnd != None):
-        query += f" AND CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) BETWEEN {coordStart} AND {coordEnd}"
+    if(coordinates != None):
+        query += f" AND CAST(REGEXP_REPLACE(nuc, '[\~,\-,\+,A,T,G,C]', '', 'g') AS FLOAT) BETWEEN {coordinates[0]} AND {coordinates[1]}"
 
     if(frequencies != None):
         query += f" AND CAST(coverage AS FLOAT) <> 0.0 AND (CAST(count AS FLOAT) / CAST(coverage AS FLOAT)) BETWEEN {frequencies[0]} AND {frequencies[1]}"
