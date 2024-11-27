@@ -1,5 +1,4 @@
 import { GlobalDataContextProvider } from "./GlobalDataContext";
-import { LoadingScreen } from './components/LoadingScreen';
 import { Dashboard } from './components/Dashboard';
 import { GlobalFilterContextProvider } from "./GlobalFilterContext";
 import { useContext, useEffect } from "react";

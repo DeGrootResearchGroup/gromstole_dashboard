@@ -105,16 +105,11 @@ export default function CollapsedTable() {
 
 
   useEffect(() => {
-    if(!filter__frequencies || !filter__frequencies.length || !filter__mutations.length || !filter__mutations) return;
     if (filter__reset) {
       setStart(0);
       setCurrentData([]);
       setPrevScrollVertical(0);
       setFilter__reset(false);
-      return;
-    }
-    if (noOfRender === 0) {
-      setNoOfRender(1);
       return;
     }
     
