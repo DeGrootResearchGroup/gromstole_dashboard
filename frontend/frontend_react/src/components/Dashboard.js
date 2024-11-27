@@ -16,6 +16,7 @@ export function Dashboard(){
         loading__g_mutation_headers,
         // loading__g_lineage_trie,
         loading__g_date_headers,
+        loading__g_defaults,
         // loading__g_sparse_matrix,
         // loading__g_aa_context
         }  = useContext(GlobalDataContext);
@@ -32,7 +33,8 @@ export function Dashboard(){
     if (
         !loading__g_mutation_headers &&
         // !loading__g_lineage_trie &&
-        !loading__g_date_headers 
+        !loading__g_date_headers && 
+        !loading__g_defaults
         // &&
         // !loading__g_sparse_matrix &&
         // !loading__g_aa_context

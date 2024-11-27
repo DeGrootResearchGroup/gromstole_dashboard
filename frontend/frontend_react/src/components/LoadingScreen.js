@@ -6,21 +6,23 @@ import { GlobalDataContext } from "../GlobalDataContext";
 export function LoadingScreen(){
     const {
         loading__g_mutation_headers,
-        loading__g_lineage_trie,
+        // loading__g_lineage_trie,
         loading__g_date_headers,
+        loading__g_defaults,
         // loading__g_sparse_matrix,
-        loading__g_lineage_dates,
-        loading__g_aa_context
+        // loading__g_lineage_dates,
+        // loading__g_aa_context
         // loading__g_sample_counts
         }  = useContext(GlobalDataContext);
 
     if (
     loading__g_mutation_headers || 
-    loading__g_lineage_trie ||
+    // loading__g_lineage_trie ||
     loading__g_date_headers ||
+    loading__g_defaults
     // loading__g_sparse_matrix ||
-    loading__g_lineage_dates ||
-    loading__g_aa_context 
+    // loading__g_lineage_dates ||
+    // loading__g_aa_context 
     // loading__g_sample_counts
     )
     {
