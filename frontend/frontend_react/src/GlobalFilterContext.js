@@ -28,6 +28,7 @@ export const GlobalFilterContextProvider = function(props){
 
     const [filter__frequencies, setFilter__frequencies] = useState([0,100]);
     const [filter__mutations, setFilter__mutations] = useState([]); // ['ins','del','sub']
+    const [filter__regions, setFilter__regions] = useState([]); // ['UNKNOWN','South','North',etc..]
     const [filter__coordinates, setFilter__coordinates] = useState([0,30300]);
     const [filter__lineages, setFilter__lineages] = useState([]);
     const [filter__dates, setFilter__dates] = useState([formatToYearWeek(new Date('2019-12-01')), formatToYearWeek(new Date())]);
@@ -41,6 +42,7 @@ export const GlobalFilterContextProvider = function(props){
             {
                 filter__frequencies, setFilter__frequencies,
                 filter__mutations, setFilter__mutations,
+                filter__regions, setFilter__regions,
                 filter__lineages, setFilter__lineages,
                 filter__coordinates, setFilter__coordinates,
                 filter__sublineage, setFilter__sublineage,

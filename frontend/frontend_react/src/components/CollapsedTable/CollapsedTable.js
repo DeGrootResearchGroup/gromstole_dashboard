@@ -56,7 +56,7 @@ export default function CollapsedTable() {
   const cell_height = 30;
   const [columns,setColumns] = useState([]);
   const {_g_date_headers} = useContext(GlobalDataContext);
-  const {filter__frequencies,filter__lineages, filter__mutations,filter__coordinates, filter__dates, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
+  const {filter__frequencies,filter__lineages, filter__mutations,filter__coordinates, filter__dates, filter__regions, current_data, setCurrentData, filter__sublineage, filter__reset, setFilter__reset} = useContext(GlobalFilterContext);
   const [sortColumns, setSortColumns] = useState();
 
   const url_load = $API_URL + $SPARSE_MATRIX_ENDPOINT;
@@ -127,7 +127,9 @@ export default function CollapsedTable() {
             lineages: filter__lineages,
             sublineages: filter__sublineage,
             mutations: filter__mutations,
-            dates: filter__dates
+            coordinates:filter__coordinates,
+            dates: filter__dates,
+            regions:filter__regions,
         },
         })
         .then((res)=>{
@@ -174,7 +176,7 @@ export default function CollapsedTable() {
 
     filter();
    
-  },[filter__frequencies,filter__lineages, filter__mutations, filter__dates, filter__sublineage])
+  },[filter__frequencies,filter__lineages, filter__mutations, filter__dates, filter__sublineage, filter__coordinates, filter__regions])
 
 
   return (
