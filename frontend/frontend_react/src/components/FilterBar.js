@@ -1,5 +1,5 @@
 import { FilterFrequencies } from "./FilterComponents/FilterFrequencies";
-import {FilterLineages} from "./FilterComponents/FilterLineages/FilterLineages"
+// import {FilterLineages} from "./FilterComponents/FilterLineages/FilterLineages"
 import {FilterMutationsCoord} from "./FilterComponents/FilterMutationsCoord";
 import {FilterMutations} from "./FilterComponents/FilterMutations";
 import {FilterRegions} from "./FilterComponents/FilterRegions";
@@ -72,10 +72,10 @@ export function FilterBar(){
                 {open ? <CloseIcon/>: <MenuIcon/>}
             </button>
             <div className={open ? "FilterBar" : "sidenavClosed"} > 
-                <div className="FilterBar__item">
+                {/* <div className="FilterBar__item">
                     <div className="FilterBar__title">Select Lineage(s):</div>
                     <FilterLineages setLineages={setLineages} key={reset}/>
-                </div>
+                </div> */}
 
                 <div className="FilterBar__item">
                     <div className="FilterBar__title">Frequency Range:</div>

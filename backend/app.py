@@ -153,16 +153,16 @@ Query args:
 def filter():
     region         = request.headers.get("Regions") # comma-separated strings "east,west,north"
     frequencies     = request.headers.get("Frequency") # comma-separated floats "45.3,98.6"
-    lineages        = request.headers.get("Lineages") # comma-separated strings "A,A.1,B.234"
-    sublineages     = request.headers.get("Sublineages") # boolean
+    # lineages        = request.headers.get("Lineages") # comma-separated strings "A,A.1,B.234"
+    # sublineages     = request.headers.get("Sublineages") # boolean
     dateRange       = request.headers.get("Dates") # comma-separated string YYYY-WW,YYYY-WW
     coordinates     = request.headers.get("Coordinates") # comma-separated ints "245,5402" this used to be called "Mutations" in Tesselo
     mutations       = request.headers.get("Mutations") # comma-separated strings "ins,del,sub" 
 
     print("region",region)
     print("frequencies",frequencies)
-    print("lineages",lineages)
-    print("sublineages",sublineages)
+    # print("lineages",lineages)
+    # print("sublineages",sublineages)
     print("dateRange",dateRange)
     print("coordinates",coordinates)
     print("mutations",mutations)
