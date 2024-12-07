@@ -1,0 +1,43 @@
+.Table{
+    width: 70vw;
+    height:84vh;
+    margin: auto;
+    transition: width 0.3s ease-in-out;
+}
+
+.infinite-scroll-component__outerdiv {
+    height: 95%
+}
+
+.infinite-scroll-component {
+    height: 95% !important
+}
+
+.Table-expanded{
+    width: 90vw;
+    height:84vh;
+    margin: auto;
+    transition: width 0.3s ease-in-out;
+}
+
+.rdg{
+    min-height: 100%;
+}
+
+.rdg-cell{
+    padding: 0;
+    text-align: center;
+    font-weight: 600;
+}
+
+.table-loading {
+    inline-size: 90px;
+    padding-block: 8px;
+    padding-inline: 16px;
+    position: absolute;
+    inset-block-end: 8px;
+    inset-inline-end: 8px;
+    color: white;
+    line-height: 25px;
+    background: rgb(0 0 0 / 0.6);
+}

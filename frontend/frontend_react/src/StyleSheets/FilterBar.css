@@ -1,0 +1,40 @@
+.FilterBar{
+    transition: width 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    height: 95vh;
+    width: 25vw;
+}
+
+.FilterBar__title {
+    font-size: medium;
+    font-weight: bold;
+    padding: 15px 15px 15px 10px;
+}
+
+.FilterBar__item {
+    flex: 1 1 auto;
+}
+    
+.sidenavClosed {
+    transition: width 0.3s ease-in-out;
+    visibility: collapse;
+    height: 95vh;
+    width: 2vw;
+}
+    
+.menuBtn {
+    margin-top: 10px;
+    align-self: flex-end; 
+    justify-self: flex-end;
+    color: #B2BAC2;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.collapsibleFilter {
+    margin: 0px 15px 0px 15px;
+    display: flex;
+    flex-direction: column;
+}

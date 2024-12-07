@@ -1,0 +1,4 @@
+*/node_modules
+frontend_react/build
+*.DS_Store
+backend_node/data
