@@ -1,3 +1,14 @@
+> [!NOTE]  
+> This fork aims to expand upon [Tesselo](https://github.com/PoonLab/Tesselo) to specifically interface with the backend Flask API of `gromstole_dashboard`
+
+> [!NOTE]  
+> The documentation below is preserved from the original Tesselo repository for archiving purposes. For instructions on installations/usage, refer to the main [README](https://github.com/DeGrootResearchGroup/gromstole_dashboard/README.md) 
+
+> [!WARNING]  
+> Do not merge this fork back into the [upstream repo of PoonLab](https://github.com/PoonLab/Tesselo)
+
+
+
 # Tesselo
 
 ## Dependencies
